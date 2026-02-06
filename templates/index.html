@@ -1,0 +1,132 @@
+{{define "content"}}
+<!-- Top Navigation Bar -->
+<nav class="top-bar">
+    <div class="top-bar-left">
+        <span class="logo">ROM Dynamics</span>
+        <span class="mode-label" id="mode-label">Navigation</span>
+    </div>
+    <div class="top-bar-center">
+        <button class="btn btn-sm" onclick="setMode('navigation')" id="btn-navi">Navigation</button>
+        <button class="btn btn-sm" onclick="setMode('mapping')">Mapping</button>
+        <button class="btn btn-sm" onclick="setMode('remapping')">Remapping</button>
+        <button class="btn btn-sm" onclick="setMode('mapediting')">Map Edit</button>
+        <button class="btn btn-sm" onclick="setMode('settings')">Settings</button>
+        <div class="top-bar-separator"></div>
+        <button class="btn btn-sm"
+                hx-get="/dialog/save_map"
+                hx-target="#dialog-overlay"
+                hx-swap="innerHTML"
+                onclick="showDialog()" title="Save Map">💾 Save</button>
+        <button class="btn btn-sm"
+                hx-get="/dialog/open_map"
+                hx-target="#dialog-overlay"
+                hx-swap="innerHTML"
+                onclick="showDialog()" title="Open Map">📂 Open</button>
+    </div>
+    <div class="top-bar-right">
+        <span class="robot-count-badge" id="robot-count">0 robots</span>
+        <span class="connection-badge" id="conn-badge">Disconnected</span>
+        <span class="freq-badge" id="freq-badge">— Hz</span>
+    </div>
+</nav>
+
+<div class="app-container">
+    <!-- Left sidebar: Robot list -->
+    <aside class="sidebar" id="sidebar-left">
+        <div class="sidebar-header">
+            <h3>Robots</h3>
+            <button class="btn btn-accent btn-sm"
+                    hx-get="/dialog/add_robot"
+                    hx-target="#dialog-overlay"
+                    hx-swap="innerHTML"
+                    onclick="showDialog()">+ Add</button>
+        </div>
+        <div id="robot-list">
+            {{template "robot_panel.html" .}}
+        </div>
+    </aside>
+
+    <!-- Main area: Map + overlays -->
+    <main class="main-area">
+        <div class="map-container" id="map-container">
+            <canvas id="map-canvas" tabindex="0"></canvas>
+
+            <!-- Map toolbar overlay -->
+            <div class="map-toolbar" id="map-toolbar">
+                <button class="tool-btn" onclick="App.zoomIn()" title="Zoom In">+</button>
+                <button class="tool-btn" onclick="App.zoomOut()" title="Zoom Out">−</button>
+                <button class="tool-btn" onclick="App.resetView()" title="Reset View">⌂</button>
+                <div class="tool-separator"></div>
+                <button class="tool-btn" onclick="App.setPlacementMode('waypoint')" title="Place Waypoint" id="tool-wp">◆</button>
+                <button class="tool-btn" onclick="App.setPlacementMode('service_point')" title="Place Service Point" id="tool-sp">●</button>
+                <button class="tool-btn" onclick="App.setPlacementMode('patrol_point')" title="Place Patrol Point" id="tool-pp">▲</button>
+                <button class="tool-btn" onclick="App.setPlacementMode('path_point')" title="Place Path Point" id="tool-path">—</button>
+                <button class="tool-btn" onclick="App.setPlacementMode('wall')" title="Place Wall" id="tool-wall">║</button>
+                <button class="tool-btn active" onclick="App.setPlacementMode(null)" title="Pan Mode" id="tool-pan">✋</button>
+            </div>
+
+            <!-- Joystick overlay (bottom-left) -->
+            <div class="joystick-container" id="joystick-container">
+                <canvas id="joystick-canvas" width="180" height="180"></canvas>
+            </div>
+
+            <!-- Info overlay (bottom-right) -->
+            <div class="info-overlay" id="info-overlay">
+                <div><span class="info-label">X:</span> <span id="info-x">0.00</span></div>
+                <div><span class="info-label">Y:</span> <span id="info-y">0.00</span></div>
+                <div><span class="info-label">θ:</span> <span id="info-theta">0.00°</span></div>
+                <div><span class="info-label">V:</span> <span id="info-vel">0.00 m/s</span></div>
+                <div><span class="info-label">ω:</span> <span id="info-omega">0.00 rad/s</span></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Right sidebar: Nav points / Settings / Graphs -->
+    <aside class="sidebar sidebar-right" id="sidebar-right">
+        <!-- Nav points tab -->
+        <div class="sidebar-section" id="section-nav">
+            <div class="sidebar-header">
+                <h3>Navigation</h3>
+            </div>
+            <div id="nav-points-content">
+                {{template "nav_points.html" .}}
+            </div>
+        </div>
+
+        <!-- Settings tab -->
+        <div class="sidebar-section hidden" id="section-settings">
+            <div class="sidebar-header"><h3>Settings</h3></div>
+            <div id="settings-content">
+                {{template "settings_panel.html" .}}
+            </div>
+        </div>
+
+        <!-- Graphs tab -->
+        <div class="sidebar-section hidden" id="section-graphs">
+            <div class="sidebar-header"><h3>Graphs</h3></div>
+            <div class="graph-container">
+                <canvas id="chart-velocity" height="150"></canvas>
+                <canvas id="chart-position" height="150"></canvas>
+            </div>
+        </div>
+
+        <!-- Speech tab -->
+        <div class="sidebar-section hidden" id="section-speech">
+            <div class="sidebar-header"><h3>Speech</h3></div>
+            <div class="speech-panel">
+                <button class="btn btn-accent" id="btn-record" onclick="Speech.toggle()">🎤 Record</button>
+                <div id="speech-status" class="speech-status">Ready</div>
+                <div id="speech-result" class="speech-result"></div>
+            </div>
+        </div>
+
+        <!-- Bottom tab buttons -->
+        <div class="sidebar-tabs">
+            <button class="tab-btn active" onclick="App.showSection('nav')" id="tab-nav">Nav</button>
+            <button class="tab-btn" onclick="App.showSection('settings')" id="tab-settings">Set</button>
+            <button class="tab-btn" onclick="App.showSection('graphs')" id="tab-graphs">Graph</button>
+            <button class="tab-btn" onclick="App.showSection('speech')" id="tab-speech">🎤</button>
+        </div>
+    </aside>
+</div>
+{{end}}

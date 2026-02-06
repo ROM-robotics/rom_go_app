@@ -1,0 +1,27 @@
+{{define "layout.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROM Dynamics — Multi-Robot Control</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+    {{template "content" .}}
+
+    <div id="notification-container"></div>
+    <div id="dialog-overlay" class="dialog-overlay hidden"></div>
+
+    <script src="/static/js/notifications.js"></script>
+    <script src="/static/js/websocket.js"></script>
+    <script src="/static/js/map_canvas.js"></script>
+    <script src="/static/js/joystick.js"></script>
+    <script src="/static/js/graphs.js"></script>
+    <script src="/static/js/speech.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
+{{end}}

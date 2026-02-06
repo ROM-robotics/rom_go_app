@@ -1,0 +1,25 @@
+{{define "open_map.html"}}
+<div class="dialog">
+    <div class="dialog-header">
+        <h3>Open Map</h3>
+        <button class="btn-close" onclick="hideDialog()">✕</button>
+    </div>
+    <div class="map-list">
+        {{if .Maps}}
+            {{range .Maps}}
+            <div class="map-item" onclick="App.openMap('{{.}}')">
+                <span class="map-icon">🗺️</span>
+                <span>{{.}}</span>
+            </div>
+            {{end}}
+        {{else}}
+            <div class="empty-state">
+                <p>No maps available</p>
+            </div>
+        {{end}}
+    </div>
+    <div class="dialog-actions">
+        <button type="button" class="btn" onclick="hideDialog()">Close</button>
+    </div>
+</div>
+{{end}}

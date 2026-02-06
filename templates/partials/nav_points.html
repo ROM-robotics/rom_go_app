@@ -1,0 +1,144 @@
+{{define "nav_points.html"}}
+<div class="nav-section">
+    <!-- Waypoints -->
+    <details open>
+        <summary class="nav-group-header">
+            Waypoints
+            <span class="badge">{{if .Counts}}{{index .Counts "waypoints"}}{{else}}0{{end}}</span>
+        </summary>
+        <div class="nav-items" id="waypoint-list">
+            {{if .Waypoints}}
+                {{range .Waypoints}}
+                <div class="nav-item">
+                    <span class="nav-item-name">{{.Name}}</span>
+                    <small>({{printf "%.2f" .WorldXM}}, {{printf "%.2f" .WorldYM}})</small>
+                    <button class="btn-del" hx-delete="/api/nav/delete?type=waypoint&name={{.Name}}"
+                            hx-target="#nav-points-content" hx-swap="innerHTML" title="Delete">✕</button>
+                </div>
+                {{end}}
+            {{else}}
+                <div class="empty-state-sm">No waypoints</div>
+            {{end}}
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-xs" hx-post="/api/nav/send" hx-vals='{"type":"waypoint"}' title="Send to robot">↑ Send</button>
+            <button class="btn btn-xs" hx-post="/api/nav/go" hx-vals='{"type":"waypoint"}' title="Go all">▶ Go</button>
+            <button class="btn btn-xs" hx-post="/api/nav/fetch" hx-vals='{"type":"waypoint"}' title="Fetch from robot">↓ Fetch</button>
+            <button class="btn btn-xs btn-danger" hx-post="/api/nav/clear" hx-vals='{"type":"waypoint"}'
+                    hx-target="#nav-points-content" hx-swap="innerHTML" title="Clear">✕</button>
+        </div>
+    </details>
+
+    <!-- Service Points -->
+    <details>
+        <summary class="nav-group-header">
+            Service Points
+            <span class="badge">{{if .Counts}}{{index .Counts "service_points"}}{{else}}0{{end}}</span>
+        </summary>
+        <div class="nav-items" id="service-point-list">
+            {{if .ServicePoints}}
+                {{range .ServicePoints}}
+                <div class="nav-item">
+                    <span class="nav-item-name">{{.Name}}</span>
+                    <small>({{printf "%.2f" .WorldXM}}, {{printf "%.2f" .WorldYM}})</small>
+                    <button class="btn-del" hx-delete="/api/nav/delete?type=service_point&name={{.Name}}"
+                            hx-target="#nav-points-content" hx-swap="innerHTML" title="Delete">✕</button>
+                </div>
+                {{end}}
+            {{else}}
+                <div class="empty-state-sm">No service points</div>
+            {{end}}
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-xs" hx-post="/api/nav/send" hx-vals='{"type":"service_point"}'>↑ Send</button>
+            <button class="btn btn-xs" hx-post="/api/nav/go" hx-vals='{"type":"service_point"}'>▶ Go</button>
+            <button class="btn btn-xs" hx-post="/api/nav/fetch" hx-vals='{"type":"service_point"}'>↓ Fetch</button>
+            <button class="btn btn-xs btn-danger" hx-post="/api/nav/clear" hx-vals='{"type":"service_point"}'
+                    hx-target="#nav-points-content" hx-swap="innerHTML">✕</button>
+        </div>
+    </details>
+
+    <!-- Patrol Points -->
+    <details>
+        <summary class="nav-group-header">
+            Patrol Points
+            <span class="badge">{{if .Counts}}{{index .Counts "patrol_points"}}{{else}}0{{end}}</span>
+        </summary>
+        <div class="nav-items" id="patrol-point-list">
+            {{if .PatrolPoints}}
+                {{range .PatrolPoints}}
+                <div class="nav-item">
+                    <span class="nav-item-name">{{.Name}}</span>
+                    <small>({{printf "%.2f" .WorldXM}}, {{printf "%.2f" .WorldYM}})</small>
+                    <button class="btn-del" hx-delete="/api/nav/delete?type=patrol_point&name={{.Name}}"
+                            hx-target="#nav-points-content" hx-swap="innerHTML" title="Delete">✕</button>
+                </div>
+                {{end}}
+            {{else}}
+                <div class="empty-state-sm">No patrol points</div>
+            {{end}}
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-xs" hx-post="/api/nav/send" hx-vals='{"type":"patrol_point"}'>↑ Send</button>
+            <button class="btn btn-xs" hx-post="/api/nav/go" hx-vals='{"type":"patrol_point"}'>▶ Go</button>
+            <button class="btn btn-xs" hx-post="/api/nav/fetch" hx-vals='{"type":"patrol_point"}'>↓ Fetch</button>
+            <button class="btn btn-xs btn-danger" hx-post="/api/nav/clear" hx-vals='{"type":"patrol_point"}'
+                    hx-target="#nav-points-content" hx-swap="innerHTML">✕</button>
+        </div>
+    </details>
+
+    <!-- Path Points -->
+    <details>
+        <summary class="nav-group-header">
+            Path Points
+            <span class="badge">{{if .Counts}}{{index .Counts "path_points"}}{{else}}0{{end}}</span>
+        </summary>
+        <div class="nav-items" id="path-point-list">
+            {{if .PathPoints}}
+                {{range .PathPoints}}
+                <div class="nav-item">
+                    <span class="nav-item-name">{{.Name}}</span>
+                    <small>({{printf "%.2f" .WorldXM}}, {{printf "%.2f" .WorldYM}})</small>
+                    <button class="btn-del" hx-delete="/api/nav/delete?type=path_point&name={{.Name}}"
+                            hx-target="#nav-points-content" hx-swap="innerHTML" title="Delete">✕</button>
+                </div>
+                {{end}}
+            {{else}}
+                <div class="empty-state-sm">No path points</div>
+            {{end}}
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-xs" hx-post="/api/nav/send" hx-vals='{"type":"path_point"}'>↑ Send</button>
+            <button class="btn btn-xs" hx-post="/api/nav/go" hx-vals='{"type":"path_point"}'>▶ Go</button>
+            <button class="btn btn-xs" hx-post="/api/nav/fetch" hx-vals='{"type":"path_point"}'>↓ Fetch</button>
+            <button class="btn btn-xs btn-danger" hx-post="/api/nav/clear" hx-vals='{"type":"path_point"}'
+                    hx-target="#nav-points-content" hx-swap="innerHTML">✕</button>
+        </div>
+    </details>
+
+    <!-- Wall Obstacles -->
+    <details>
+        <summary class="nav-group-header">
+            Walls
+            <span class="badge">{{if .Counts}}{{index .Counts "wall_obstacles"}}{{else}}0{{end}}</span>
+        </summary>
+        <div class="nav-items" id="wall-list">
+            {{if .WallObstacles}}
+                {{range $i, $w := .WallObstacles}}
+                <div class="nav-item">
+                    <span class="nav-item-name">Wall {{$i}}</span>
+                    <small>({{printf "%.1f" $w.WorldXMStart}},{{printf "%.1f" $w.WorldYMStart}})→({{printf "%.1f" $w.WorldXMEnd}},{{printf "%.1f" $w.WorldYMEnd}})</small>
+                </div>
+                {{end}}
+            {{else}}
+                <div class="empty-state-sm">No walls</div>
+            {{end}}
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-xs" hx-post="/api/nav/send" hx-vals='{"type":"wall"}'>↑ Send</button>
+            <button class="btn btn-xs btn-danger" hx-post="/api/nav/clear" hx-vals='{"type":"wall"}'
+                    hx-target="#nav-points-content" hx-swap="innerHTML">✕</button>
+        </div>
+    </details>
+</div>
+{{end}}

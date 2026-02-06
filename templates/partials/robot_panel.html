@@ -1,0 +1,45 @@
+{{define "robot_panel.html"}}
+<div class="robot-list">
+    {{if .Robots}}
+        {{range .Robots}}
+        {{$snap := .GetSnapshot}}
+        <div class="robot-card {{if eq $snap.ID $.CurrentID}}active{{end}}"
+             onclick="App.switchRobot('{{$snap.ID}}')"
+             id="robot-card-{{$snap.ID}}">
+            <div class="robot-card-header">
+                <span class="robot-name">{{$snap.Name}}</span>
+                <span class="robot-status {{if $snap.Connected}}connected{{else}}disconnected{{end}}">
+                    {{if $snap.Connected}}●{{else}}○{{end}}
+                </span>
+            </div>
+            <div class="robot-card-info">
+                <small>{{$snap.IP}}:{{$snap.Port}}</small>
+                <small>{{$snap.Namespace}}</small>
+            </div>
+            <div class="robot-card-actions">
+                {{if $snap.Connected}}
+                <button class="btn btn-xs"
+                        onclick="event.stopPropagation(); WS.send({type:'disconnect', robot_id:'{{$snap.ID}}'});"
+                        title="Disconnect">⏏</button>
+                {{else}}
+                <button class="btn btn-xs btn-accent"
+                        onclick="event.stopPropagation(); WS.send({type:'connect', robot_id:'{{$snap.ID}}'});"
+                        title="Reconnect">⟳</button>
+                {{end}}
+                <button class="btn btn-xs btn-danger"
+                        hx-delete="/api/robots?id={{$snap.ID}}"
+                        hx-target="#robot-list"
+                        hx-swap="innerHTML"
+                        hx-confirm="Remove {{$snap.Name}}?"
+                        onclick="event.stopPropagation()">✕</button>
+            </div>
+        </div>
+        {{end}}
+    {{else}}
+        <div class="empty-state">
+            <p>No robots added</p>
+            <small>Click "+ Add" to connect a robot</small>
+        </div>
+    {{end}}
+</div>
+{{end}}

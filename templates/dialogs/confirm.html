@@ -1,0 +1,16 @@
+{{define "confirm.html"}}
+<div class="dialog">
+    <div class="dialog-header">
+        <h3>Confirm</h3>
+        <button class="btn-close" onclick="hideDialog()">✕</button>
+    </div>
+    <p class="dialog-message">{{.Message}}</p>
+    <div class="dialog-actions">
+        <button type="button" class="btn" onclick="hideDialog()">Cancel</button>
+        <button type="button" class="btn btn-danger"
+                hx-post="{{.Action}}"
+                hx-on::after-request="hideDialog()"
+                >Confirm</button>
+    </div>
+</div>
+{{end}}

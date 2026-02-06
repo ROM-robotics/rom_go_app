@@ -1,0 +1,32 @@
+{{define "add_nav_point.html"}}
+<div class="dialog">
+    <div class="dialog-header">
+        <h3>Add {{.Type}}</h3>
+        <button class="btn-close" onclick="hideDialog()">✕</button>
+    </div>
+    <form hx-post="/api/nav/add" hx-target="#nav-points-content" hx-swap="innerHTML"
+          hx-on::after-request="hideDialog()">
+        <input type="hidden" name="type" value="{{.Type}}">
+        <div class="form-group">
+            <label for="pt-name">Name</label>
+            <input type="text" name="name" id="pt-name" required class="input" placeholder="Point name">
+        </div>
+        <div class="form-group">
+            <label for="pt-x">World X (m)</label>
+            <input type="number" step="0.01" name="world_x" id="pt-x" required class="input" value="{{if .X}}{{.X}}{{else}}0{{end}}">
+        </div>
+        <div class="form-group">
+            <label for="pt-y">World Y (m)</label>
+            <input type="number" step="0.01" name="world_y" id="pt-y" required class="input" value="{{if .Y}}{{.Y}}{{else}}0{{end}}">
+        </div>
+        <div class="form-group">
+            <label for="pt-theta">Theta (rad)</label>
+            <input type="number" step="0.01" name="theta" id="pt-theta" class="input" value="0">
+        </div>
+        <div class="dialog-actions">
+            <button type="button" class="btn" onclick="hideDialog()">Cancel</button>
+            <button type="submit" class="btn btn-accent">Add</button>
+        </div>
+    </form>
+</div>
+{{end}}
