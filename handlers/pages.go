@@ -27,7 +27,7 @@ func (s *Server) IndexPage(w http.ResponseWriter, r *http.Request) {
 		"Robots":    robots,
 		"CurrentID": s.Manager.GetCurrentRobotID(),
 	}
-	s.render(w, "index.html", data)
+	s.render(w, "layout.html", data)
 }
 
 // render executes a template with common error handling.
